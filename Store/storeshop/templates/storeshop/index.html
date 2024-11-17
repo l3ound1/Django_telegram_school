@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{%load static%}
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>300 Баллов</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url  'store:home'%}">
+            <img src="{% static 'images/logo.png' %}" alt="" />
+            <span>
+              300 Баллов
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item ">
+                <a class="nav-link" href="{%url 'store:home'%}">Домой <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'store:category'%}"> Предметы </a>
+              </li>
+              {%if user.is_authenticated%}
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'storeshop:home'%}">{{user.name}} {{user.fullname}}</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:logout'%}">Выйти</a>
+              </li>
+              {%else%}
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:login'%}">Авторизоваться </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:register'%}">Регистрация</a>
+              </li>
+              {%endif%}
+            </ul>
+          </div>
+          <div>
+            <div class="custom_menu-btn ">
+              <button>
+                <span class=" s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section ">
+      <div class="carousel_btn-container">
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">01</li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1">02</li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2">03</li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-5 offset-md-1">
+                  <div class="detail-box">
+                    <h1>
+                      Ты сможешь <br>
+                      сдать ЕГЭ на <br>
+                      100 баллов
+                    </h1>
+                    <div class="btn-box">
+                      <a href="{%url 'storeshop:category'%}" class="btn-1">
+                        Записаться
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="offset-md-1 col-md-4 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img.png'%}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item ">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-5 offset-md-1">
+                  <div class="detail-box">
+                    <h1>
+                      Ты сможешь <br>
+                      сдать ЕГЭ на <br>
+                      100 баллов
+                    </h1>
+                    <div class="btn-box">
+                      <a href="{%url 'storeshop:category'%}" class="btn-1">
+                        Записаться
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="offset-md-1 col-md-4 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img.png'%}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+
+
+
+  <section class="experience_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="img-box">
+            <img src="{% static 'images/experience-img.jpg'%}" alt="">
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                Наши ученики поступают в лучшие университеты нашей страны
+              </h2>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="category_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Предметы
+        </h2>
+      </div>
+      <div class="category_container">
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c1.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              Химия
+            </h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c2.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              Математика
+            </h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c3.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              Информатика
+            </h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c4.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              Физика
+            </h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c5.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              География
+            </h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="{% static 'images/c6.png'%}" alt="">
+          </div>
+          <div class="detail-box">
+            <h5>
+              Программирование
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- end category section -->
+
+  <!-- about section -->
+
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.jpg'%}" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="detail-box">
+        <h2>
+          О нашей компании
+        </h2>
+        <p>
+          "300 Баллов" — это ведущий центр подготовки детей к экзаменам, который успешно работает в сфере образования уже более 10 лет. Мы предлагаем уникальные индивидуальные занятия, направленные на подготовку учеников к ЕГЭ.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+  <!-- freelance section -->
+
+  <section class="freelance_section ">
+    <div id="accordion">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-5 offset-md-1">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>
+                  Наша работа выполнена
+                </h2>
+              </div>
+              <div class="tab_container">
+                <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <div class="img-box">
+                    <img src="{% static 'images/f1.png'%}" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h5>
+                      Более 1000
+                    </h5>
+                    <h3>
+                      Наших учеников поступило на бюджет
+                    </h3>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <div class="img-box">
+                    <img src="{% static 'images/f3.png'%}" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h5>
+                      Наши ученики
+                    </h5>
+                    <h3>
+                      Поступают в лучшие университеты страны
+                    </h3>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  <div class="img-box">
+                    <img src="{% static 'images/f4.png'%}" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h5>
+                      98%
+                    </h5>
+                    <h3>
+                      Клиент <br>
+                      Уровень удовлетворенности
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="img-box">
+                <img src="{% static 'images/freelance-img.jpg'%}" alt="">
+              </div>
+            </div>
+            <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="img-box">
+                <img src="{% static 'images/freelance-img.jpg'%}" alt="">
+              </div>
+            </div>
+            <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="img-box">
+                <img src="{% static 'images/freelance-img.jpg'%}" alt="">
+              </div>
+            </div>
+            <div class="collapse" id="collapseFour" aria-labelledby="headingfour" data-parent="#accordion">
+              <div class="img-box">
+                <img src="{% static 'images/freelance-img.jpg'%}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+  <script src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
+  <script src="{% static 'js/bootstrap.js'%}"></script>
+  <script src="{% static 'js/custom.js'%}"></script>
+
+
+</body>
+</body>
+
+</html>

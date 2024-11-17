@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{%load static %}
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>300 Баллов</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="sub_page">
+  <style>
+    a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+  </style>
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url  'store:home'%}">
+            <img src="{% static 'images/logo.png' %}" alt="" />
+            <span>
+              300 Баллов
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item ">
+                <a class="nav-link" href="{%url 'store:home'%}">Домой <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'store:category'%}"> Предметы </a>
+              </li>
+              {%if user.is_authenticated%}
+              <li class="nav-item active">
+                  <a class="nav-link" href="{%url 'storeshop:home'%}">{{user.name}} {{user.fullname}}</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:logout'%}">Выйти</a>
+              </li>
+              {%else%}
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:login'%}">Авторизоваться </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:register'%}">Регистрация</a>
+              </li>
+              {%endif%}
+            </ul>
+          </div>
+          <div>
+            <div class="custom_menu-btn ">
+              <button>
+                <span class=" s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <!-- category section -->
+
+  <section class="category_section layout_padding">
+        <div class="container">
+            <div class="detail-box">
+                <h1>
+                  {{step}}
+                </h1>
+                <h2>
+                  Выберите план обучения
+                </h2>
+           </div>
+            <div class="category_container">
+                <div class="box">
+                    <div class="img-box">
+                        <img src="{% static 'images/c1.png' %}" alt="1 месяц">
+                    </div>
+                    <div class="detail-box">
+                        <h5>1 месяц</h5>
+                        <p>Краткосрочный курс для интенсивной подготовки.</p>
+                        <div class="btn-box">
+                            <h2><a href="{% url 'storeshop:course' %}?m=1&step={{step}}&i={{user.id}}" class="btn-1">Записаться</a></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="img-box">
+                        <img src="{% static 'images/c2.png' %}" alt="3 месяца">
+                    </div>
+                    <div class="detail-box">
+                        <h5>3 месяца</h5>
+                        <p>Среднесрочный курс для уверенной подготовки.</p>
+                        <div class="btn-box">
+                            <h2><a href="{% url 'storeshop:course' %}?m=3&step={{step}}&i={{user.id}}" class="btn-1">Записаться</a></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="img-box">
+                        <img src="{% static 'images/c3.png' %}" alt="9 месяцев">
+                    </div>
+                    <div class="detail-box">
+                        <h5>9 месяцев</h5>
+                        <p>Полный курс для достижения максимального результата.</p>
+                        <div class="btn-box">
+                            <h2><a href="{% url 'storeshop:course' %}?m=9&step={{step}}&i={{user.id}}" class="btn-1">Записаться</a></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.jpg'%}" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="detail-box">
+        <p>
+          Основное правило подготовки к экзамену
+        </p>
+        <h2>
+          Планируй, практикуй, и отдыхай.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
+  <script src="{% static 'js/bootstrap.js'%}"></script>
+  <script src="{% static 'js/custom.js'%}"></script>
+</body>
+</body>
+
+</html>
+

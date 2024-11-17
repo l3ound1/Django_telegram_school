@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{%load static %}
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>300 Баллов</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="sub_page">
+  <style>
+    a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+  </style>
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url  'store:home'%}">
+            <img src="{% static 'images/logo.png' %}" alt="" />
+            <span>
+              300 Баллов
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item ">
+                <a class="nav-link" href="{%url 'store:home'%}">Домой <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'store:category'%}"> Предметы </a>
+              </li>
+              {%if user.is_authenticated%}
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'storeshop:home'%}">{{user.name}} {{user.fullname}}</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:logout'%}">Выйти</a>
+              </li>
+              {%else%}
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:login'%}">Авторизоваться </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'Users:register'%}">Регистрация</a>
+              </li>
+              {%endif%}
+            </ul>
+          </div>
+          <div>
+            <div class="custom_menu-btn ">
+              <button>
+                <span class=" s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <!-- category section -->
+
+  <section class="category_section layout_padding">
+  <div class="container">
+    <div class="heading_container">
+      <h2>
+        Предметы
+      </h2>
+    </div>
+    <div class="category_container">
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c1.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=Химия">Химия</a></h5>
+        </div>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c2.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=Математика">Математика</a></h5>
+        </div>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c3.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=Информатика">Информатика</a></h5>
+        </div>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c4.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=Физика">Физика</a></h5>
+        </div>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c5.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=География">География</a></h5>
+        </div>
+      </div>
+      <div class="box">
+        <div class="img-box">
+          <img src="{% static 'images/c6.png'%}" alt="">
+        </div>
+        <div class="detail-box">
+          <h5><a href="{%url 'storeshop:buy'%}?step=Программирование">Программирование</a></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.jpg'%}" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="detail-box">
+        <h2>
+          О нашей компании
+        </h2>
+        <p>
+          "300 Баллов" — это ведущий центр подготовки детей к экзаменам, который успешно работает в сфере образования уже более 10 лет. Мы предлагаем уникальные индивидуальные занятия, направленные на подготовку учеников к ЕГЭ.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
+  <script src="{% static 'js/bootstrap.js'%}"></script>
+  <script src="{% static 'js/custom.js'%}"></script>
+</body>
+</body>
+
+</html>
