@@ -16,6 +16,7 @@ class Schedule(models.Model):
     time = models.CharField(max_length=50,default=None,null=True)
     teacher = models.CharField(max_length=50,default=None,null=True)
     subject = models.CharField(max_length=50,default=None,null=True)
+    predment = models.CharField(max_length=50,default=None,null = True)
 
 
 class User(AbstractUser):
@@ -31,6 +32,7 @@ class User(AbstractUser):
     photo_teacher = models.CharField(max_length=100,blank=True,null = True)
     student_teacher = models.CharField(max_length=50,blank=True,null=True,default=None)
     regalia_teacher = models.CharField(max_length=300,blank = True,null = True,default=None)
+    id_t = models.CharField(max_length= 75,null=True,default=None)
 
 
 

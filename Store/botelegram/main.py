@@ -124,7 +124,6 @@ def user_profile(message, res,selected_time = False):
         keyboard.add(btn1, btn2, btn3, btn4)
     else:
         resu = function_bot.predment_list(users[chat_id]["login"])
-        print(len(resu))
         keyboard.add(btn1, btn2, btn3)
     if len(resu) == 2:
         subjetc = "\n".join(resu)
@@ -181,32 +180,36 @@ def send_photo_with_buttons(chat_id, teachers):
         telebot.types.InlineKeyboardButton("➡️", callback_data='next'),
         telebot.types.InlineKeyboardButton("Выбрать", callback_data='ok')
     )
+    predmet_check = function_bot.check_predment(users[chat_id])
 
     if teachers_list:
         teacher = teachers_list[index_photo]
     else:
         bot.send_message(chat_id, "Нет доступных учителей.")
         return
+    if len(predmet_check) != 0:
 
-    if hasattr(teacher, 'photo_teacher'):
-        teacher_photo = teacher.photo_teacher
+        if hasattr(teacher, 'photo_teacher'):
+            teacher_photo = teacher.photo_teacher
+        else:
+            bot.send_message(chat_id, "Ошибка: учитель не имеет фото.")
+            return
+
+        free_times = function_bot.check_time_teachers(teacher.username)
+
+        if isinstance(free_times, dict):
+            free_schedule = "\n".join([f"{day}: {', '.join(times)}" for day, times in free_times.items()])
+        else:
+            free_schedule = free_times
+
+        if os.path.isfile(teacher_photo):
+            with open(teacher_photo, "rb") as photo:
+                bot.send_photo(chat_id, photo, caption=f"{teacher.fullname} {teacher.name} \n" + f"Свободное время учителя:\n{free_schedule}", reply_markup=keyboard)
+        else:
+            bot.send_message(chat_id, "Фото учителя не найдено.")
+            return
     else:
-        bot.send_message(chat_id, "Ошибка: учитель не имеет фото.")
-        return
-
-    free_times = function_bot.check_time_teachers(teacher.username)
-
-    if isinstance(free_times, dict):
-        free_schedule = "\n".join([f"{day}: {', '.join(times)}" for day, times in free_times.items()])
-    else:
-        free_schedule = free_times
-
-    if os.path.isfile(teacher_photo):
-        with open(teacher_photo, "rb") as photo:
-            bot.send_photo(chat_id, photo, caption=f"Свободное время учителя:\n{free_schedule}", reply_markup=keyboard)
-    else:
-        bot.send_message(chat_id, "Фото учителя не найдено.")
-        return
+        bot.send_message(chat_id, "У тебя уже есть учитель по предмету " + teacher.predment)
 
 
 @bot.callback_query_handler(func=lambda call: call.data in ["prev", "next", "ok"])

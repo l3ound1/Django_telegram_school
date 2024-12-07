@@ -1,5 +1,7 @@
 import sqlite3
 from django.contrib.auth.hashers import check_password
+from django.db.models.functions import Length
+
 from Users.models import User, Schedule
 import os
 import django
@@ -28,10 +30,11 @@ def check(login,password,check_predmet =0):
     if check_password(password, user.password) == True and user.profile == None:
         return [1,user.name,user.fullname,login,user.schedule,user.profile,user.photo_teacher,predmet]
     if check_password(password,user.password) == True and user.profile != None:
-        if user.schedule.filter(time=None):
+        list_predment = predment_list(login,check_predmet = 1)
+        if user.schedule.annotate(len=Length('time')) != len(list_predment):
             return [2, user.name, user.fullname, login, None, user.profile, user.photo_teacher, predmet]
         else:
-            return [2, user.name, user.fullname, login, None, user.profile, user.photo_teacher, predmet]
+            return [2, user.name, user.fullname, login, user.schedule.time, user.profile, user.photo_teacher, predmet]
     if password == " ":
          return [1, user.name, user.fullname, login, user.schedule, user.profile, user.photo_teacher, predmet]
 
@@ -51,7 +54,7 @@ def predment_list(login,check_predmet = 0):
     list_messsage = []
     user = User.objects.get(username__iexact=login)
     if user.predment is None:
-        return None
+        return []
     else:
         predment = user.predment
         predment_list = [word + " "for word in predment.split(" ") if word]
@@ -71,9 +74,10 @@ def predment_list(login,check_predmet = 0):
                     list_messsage.append(f"{predment_list[i]} - {data_list[j]} месяц")
                 i+=1
                 j+=1
-            for k in range(len(list_messsage) - 1):
+            for k in range(len(list_messsage) - 1 ):
                 if list_messsage[k] == None:
                     list_messsage.pop(k)
+
     return  list_messsage
 
 #оценки
@@ -128,47 +132,47 @@ def teacher_list(predment):
 def check_time_teachers(teacher_username):
     teacher = User.objects.filter(username__iexact=teacher_username).first()
     if not teacher:
-        return "Учитель не найден"
-
-    teacher_schedule = teacher.schedule.all()
-
-    if not teacher_schedule:
-        free_time = get_all_free_times()
-        return "\n".join(
-            [f"{day}: {', '.join(times)}" for day, times in free_time.items()]) + "\nНапиши цифру расписания"
-
-    all_schedule = {
-        "Понедельник": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                        {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
-        "Вторник": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                    {"time": "14:15 - 16:00", "number": 3}, {"time": "16:15 - 18:00", "number": 4}],
-        "Среда": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                  {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
-        "Четверг": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                    {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
-        "Пятница": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                    {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
-        "Суббота": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
-                    {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
-    }
-
-    free_times = {}
-
-    for day, periods in all_schedule.items():
-        free_periods = []
-        teacher_day_schedule = teacher_schedule.filter(time__icontains=day)
-
-        for period in periods:
-            if not teacher_day_schedule.filter(time=period["time"]).exists():
-                free_periods.append(period["time"])
-
-        if free_periods:
-            free_times[day] = free_periods
-
-    if free_times:
-        return "\n".join([f"{day}: {', '.join(times)}" for day, times in free_times.items()])
+            return "Учитель не найден"
     else:
-        return "Учитель занят в течение всей недели"
+        teacher_schedule = teacher.schedule.all()
+
+        if not teacher_schedule:
+            free_time = get_all_free_times()
+            return "\n".join(
+                [f"{day}: {', '.join(times)}" for day, times in free_time.items()]) + "\nНажмите на кнопку <<выбрать>>"
+
+        all_schedule = {
+            "Понедельник": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                            {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
+            "Вторник": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                        {"time": "14:15 - 16:00", "number": 3}, {"time": "16:15 - 18:00", "number": 4}],
+            "Среда": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                      {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
+            "Четверг": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                        {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
+            "Пятница": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                        {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
+            "Суббота": [{"time": "8:00 - 10:00", "number": 1}, {"time": "10:15 - 12:15", "number": 2},
+                        {"time": "12:30 - 14:00", "number": 3}, {"time": "14:15 - 16:00", "number": 4}],
+        }
+
+        free_times = {}
+
+        for day, periods in all_schedule.items():
+            free_periods = []
+            teacher_day_schedule = teacher_schedule.filter(time__icontains=day)
+
+            for period in periods:
+                if not teacher_day_schedule.filter(time=period["time"]).exists():
+                    free_periods.append(period["time"])
+
+            if free_periods:
+                free_times[day] = free_periods
+
+        if free_times:
+            return "\n".join([f"{day}: {', '.join(times)}" for day, times in free_times.items()])
+        else:
+            return "Учитель занят в течение всей недели"
 
 
 def get_all_free_times():
@@ -196,3 +200,10 @@ def result_time(time, teacher_fullname, login, subject_name):
 
     return "Не найдено\nНапишите заново!"
 
+def check_predment(login):
+    user = User.objects.filter(username__iexact=login).first()
+    if user:
+        predments = [schedule.predment for schedule in user.schedule.all()]
+        return predments
+    else:
+        return []
