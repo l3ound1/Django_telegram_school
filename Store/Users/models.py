@@ -13,7 +13,9 @@ class Home_work(models.Model):
 
 
 class Schedule(models.Model):
-    schedule = models.CharField(blank=True, max_length=200, null=True)
+    time = models.CharField(max_length=50,default=None,null=True)
+    teacher = models.CharField(max_length=50,default=None,null=True)
+    subject = models.CharField(max_length=50,default=None,null=True)
 
 
 class User(AbstractUser):
@@ -23,7 +25,7 @@ class User(AbstractUser):
     fullname = models.CharField(max_length=200, blank=True)
     patronymic = models.CharField(max_length=200, blank=True)
     timecourse = models.CharField(blank=True,max_length=200,null=True)
-    schedule = models.ForeignKey(Schedule,on_delete=models.CASCADE,related_name="schedul",blank = True,null=True)
+    schedule = models.ManyToManyField(Schedule, related_name="schedule")
     evaluations = models.ForeignKey(evaluations, on_delete=models.CASCADE, related_name="evaluat",blank = True,null=True)
     home_work = models.ForeignKey(Home_work, on_delete=models.CASCADE, related_name="work_hom",blank = True,null=True)
     photo_teacher = models.CharField(max_length=100,blank=True,null = True)
