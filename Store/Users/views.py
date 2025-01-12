@@ -14,7 +14,7 @@ from Users.forms import User_Add, Login_Users
 class UsersLogin(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('storeshop:home')
+            return redirect("storeshop:home")
         return super().dispatch(request, *args, **kwargs)
     form_class = Login_Users
     template_name = "Users/login_user.html"

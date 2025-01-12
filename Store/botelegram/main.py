@@ -45,6 +45,8 @@ def save_password(message):
 
         bot.send_message(chat_id, f"Здраствуйте,{result[1]} {result[2]}\n"
                                   f"Выбери свой профиль", reply_markup=keyboard)
+        if result[-1] == None:
+            function_bot.save_data(users[chat_id]['login'],chat_id)
     if result[0] == 2:
 
         if result[5] == "teacher":
@@ -54,7 +56,8 @@ def save_password(message):
                 teacher_profile(message=message, res=result)
         else:
             user_profile(message=message, res=result)
-
+        if result[-1] == None:
+            function_bot.save_data(users[chat_id]['login'],chat_id)
     if result[0] == 3:
         keyboard = telebot.types.InlineKeyboardMarkup()
         button_teacher = telebot.types.InlineKeyboardButton(text="Заново", callback_data="restart")
@@ -146,74 +149,58 @@ def handler_main(call):
         users[chat_id] = {'index_photo': 0, 'teachers': []}
 
     student = function_bot.check(login=users[chat_id]['login'], password=users[chat_id]["password"], check_predmet=1)
-    teachers = []
-    for subject in student[-1]:
-        teachers.extend(function_bot.teacher_list(subject))
-
-    users[chat_id]['teachers'] = teachers
+    
+    subjects = student[-2]
+    users[chat_id]['subjects'] = subjects
 
     if call.data == "week_new":
         bot.send_message(chat_id,
-                         "Привет, наш дорогой друг! \nСейчас тебе предстоит сделать самый сложный выбор — выбор расписания. Сейчас перед тобой появится список учителей, их фото и регалии.")
-        send_photo_with_buttons(chat_id, teachers)
+                         "Привет, наш дорогой друг! \nСейчас тебе предстоит сделать самый сложный выбор — выбор предмета. Пожалуйста, выбери предмет, по которому ты хочешь увидеть учителей.")
+        
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        for subject in subjects:
+            button = telebot.types.InlineKeyboardButton(text=subject, callback_data=f"subject_{subject}")
+            keyboard.add(button)
 
+        bot.send_message(chat_id, "Выберите предмет:", reply_markup=keyboard)
+
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('subject_'))
+def handle_subject_choice(call):
+    chat_id = call.message.chat.id
+    subject = call.data.split('_')[1].replace('_', ' ')  
+
+    student = function_bot.check(login=users[chat_id]['login'], password=users[chat_id]["password"], check_predmet=1)
+    teachers = []
+    for subj in student[-1]:
+        if subj == subject: 
+            teachers.extend(function_bot.teacher_list(subj))
+
+    if teachers:
+        bot.send_message(chat_id, f"Вот учителя по предмету {subject}:")
+        send_photo_with_buttons(chat_id, teachers)
+    else:
+        bot.send_message(chat_id, f"Извините, учителей для предмета {subject} нет.")
 
 def send_photo_with_buttons(chat_id, teachers):
+    for teacher in teachers:
+        photo_url = teacher.get('photo_url')
+        name = teacher.get('name')
+        subject = teacher.get('subject')
 
-    if chat_id not in users:
-        users[chat_id] = {'index_photo': 0, 'teachers': teachers}
-    else:
-        if 'index_photo' not in users[chat_id]:
-            users[chat_id]['index_photo'] = 0
-        if 'teachers' not in users[chat_id]:
-            users[chat_id]['teachers'] = teachers
-    index_photo = users[chat_id]['index_photo']
-    teachers_list = users[chat_id]['teachers']
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        button = telebot.types.InlineKeyboardButton(text=f"Подробнее о {name}", callback_data=f"teacher_{name}")
+        keyboard.add(button)
 
-    keyboard = telebot.types.InlineKeyboardMarkup(row_width=3)
-
-    if index_photo > 0:
-        keyboard.add(telebot.types.InlineKeyboardButton("⬅️", callback_data='prev'))
-
-    keyboard.add(
-        telebot.types.InlineKeyboardButton("➡️", callback_data='next'),
-        telebot.types.InlineKeyboardButton("Выбрать", callback_data='ok')
-    )
-    predmet_check = function_bot.check_predment(users[chat_id])
-
-    if teachers_list:
-        teacher = teachers_list[index_photo]
-    else:
-        bot.send_message(chat_id, "Нет доступных учителей.")
-        return
-    if len(predmet_check) != 0:
-
-        if hasattr(teacher, 'photo_teacher'):
-            teacher_photo = teacher.photo_teacher
-        else:
-            bot.send_message(chat_id, "Ошибка: учитель не имеет фото.")
-            return
-
-        free_times = function_bot.check_time_teachers(teacher.username)
-
-        if isinstance(free_times, dict):
-            free_schedule = "\n".join([f"{day}: {', '.join(times)}" for day, times in free_times.items()])
-        else:
-            free_schedule = free_times
-
-        if os.path.isfile(teacher_photo):
-            with open(teacher_photo, "rb") as photo:
-                bot.send_photo(chat_id, photo, caption=f"{teacher.fullname} {teacher.name} \n" + f"Свободное время учителя:\n{free_schedule}", reply_markup=keyboard)
-        else:
-            bot.send_message(chat_id, "Фото учителя не найдено.")
-            return
-    else:
-        bot.send_message(chat_id, "У тебя уже есть учитель по предмету " + teacher.predment)
+        bot.send_photo(chat_id, photo_url, caption=f"{name} - {subject}", reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: call.data in ["prev", "next", "ok"])
+
+@bot.callback_query_handler(func=lambda call: call.data in ["prev", "next", "ok","main_menu"])
 def handle_callback(call):
     chat_id = call.message.chat.id
+    if call.data == "main_menu":
+        user_profile(chat_id,res=[],selected_time=True)
 
     if chat_id not in users:
         bot.send_message(chat_id, "Произошла ошибка. Пожалуйста, начни заново.")
@@ -266,6 +253,16 @@ def save_predment_teacher(call):
     bot.send_message(call.message.chat.id, "Сохранено")
     teacher_profile(call.message, result2)
 
+def notify_teacher(subject_name, student_login):
+    try:
+        teacher = User.objects.filter(predment__icontains=subject_name, profile="teacher").first()
+        if teacher and teacher.chat_id:
+            bot.send_message(
+                teacher.chat_id,
+                f"Ученик {student_login} выбрал ваш предмет: {subject_name}."
+            )
+    except Exception as e:
+        print(f"Ошибка при уведомлении учителя: {e}")
 
 #выбор времени
 def selected_time(message,teacher_name,teacher_fullname,subject_teach):

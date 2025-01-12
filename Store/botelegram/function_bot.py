@@ -28,11 +28,11 @@ def check(login,password,check_predmet =0):
     if check_predmet == 1:
         predmet = predment_list(login, check_predmet)
     if check_password(password, user.password) == True and user.profile == None:
-        return [1,user.name,user.fullname,login,user.schedule,user.profile,user.photo_teacher,predmet]
+        return [1,user.name,user.fullname,login,user.schedule,user.profile,user.photo_teacher,predmet,user.id_t]
     if check_password(password,user.password) == True and user.profile != None:
         list_predment = predment_list(login,check_predmet = 1)
         if user.schedule.annotate(len=Length('time')) != len(list_predment):
-            return [2, user.name, user.fullname, login, None, user.profile, user.photo_teacher, predmet]
+            return [2, user.name, user.fullname, login, None, user.profile, user.photo_teacher, predmet,user.id_t]
         else:
             return [2, user.name, user.fullname, login, user.schedule.time, user.profile, user.photo_teacher, predmet]
     if password == " ":
@@ -113,13 +113,18 @@ def save_photo(message,login,bot):
         return "Ваше фото не сохранено"
 
 #Сохранение предметов учителей
-def save_teacher_predment(login,predment):
-    user = User.objects.get(username__iexact = login)
-    user.predment = predment + ' '
-    if user.save():
-        return [1,user.name,user.fullname,login,user.schedule,user.profile,user.photo_teacher,user.predment]
-    else:
-        return [0,user.name,user.fullname,login,user.schedule,user.profile,user.photo_teacher,user.predment]
+def save_teacher_predment(login, predment):
+    try:
+        user = User.objects.get(username__iexact=login)
+        if user.predment:
+            user.predment += f"{predment} "
+        else:
+            user.predment = f"{predment} "
+        user.save()
+        return [user.name, user.fullname, user.patronymic, login, user.schedule, user.profile, user.photo_teacher, user.predment]
+    except Exception as e:
+        print(f"Ошибка при сохранении предмета учителя: {e}")
+        return []
 
 #Список учителей
 def teacher_list(predment):
@@ -207,3 +212,10 @@ def check_predment(login):
         return predments
     else:
         return []
+
+
+#для сохранения данных
+def save_data(login,data):
+    user = User.objects.get(username__iexact = login)
+    user.id_t = data
+    user.save()

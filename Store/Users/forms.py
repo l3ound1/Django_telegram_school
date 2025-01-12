@@ -23,9 +23,13 @@ class User_Add(UserCreationForm):
             raise forms.ValidationError("Такой Е-майл уже есть")
         return cd
 
+
+
+
+
 class Login_Users(AuthenticationForm):
     username = forms.CharField(label='Логин пользователя', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    class Meta:
-        model = get_user_model()
-        fields = ['username', 'password']
+
+
+
