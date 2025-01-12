@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Telegram Bot",
+            "type": "python",
+            "request": "launch",
+            "program": "D:/pythonProject1/Store/botelegram/main.py",
+            "console": "integratedTerminal",
+            "cwd": "D:/pythonProject1/Store",
+            "env": {
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": "D:/pythonProject1/Store"
+            }
+        }
+    ]
+}
+
