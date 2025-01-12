@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Telegram Bot",
+            "type": "python",
+            "request": "launch",
+            "program": "C:/Django_telegram_school/Store/botelegram/main.py",
+            "console": "integratedTerminal",
+            "cwd": "C:/Django_telegram_school/Store",
+            "env": {
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": "C:/Django_telegram_school/Store"
+            }
+        }
+    ]
+}
