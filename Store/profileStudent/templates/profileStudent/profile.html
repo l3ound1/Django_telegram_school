@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Профиль ученика</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="sub_page">
+  <style>
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      color: inherit;
+      text-decoration: none;
+    }
+  </style>
+
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{% url 'store:home' %}">
+            <span>
+              Профиль ученика {{user.first_name}} {{user.last_name}}
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="{%url 'profileStudent:prof'%}">{{user.name}} {{user.fullname}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'store:home' %}">Домой</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'store:category' %}">Предметы</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'Users:logout' %}">Выйти</a>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <!-- Student Profile Section -->
+  <section class="profile_section layout_padding">
+    <div class="container">
+      <div class="detail-box">
+        <h1>Профиль ученика {{ user.name }} {{ user.fullname }}</h1>
+      </div>
+      <div class="profile_container">
+        <div class="box">
+          <div class="detail-box">
+            <h5>Имя: {{ user.name }}</h5>
+            <p>Email: {{ user.email }}</p>
+            <p>
+              {% for lesson in schedule %}
+              {% if lesson.subject %}
+              <p>{{ lesson.subject }}</p>
+              {% else %}
+              <p>У вас нет предмета</p>
+              {% endif %}              
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule Section -->
+  <section class="schedule_section layout_padding">
+    <div class="container">
+      <h2>Электронное расписание</h2>
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>День недели</th>
+            <th>Время</th>
+            <th>Предмет</th>
+            <th>Учитель</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lesson in user.schedule.all %}
+          <tr>
+            <td>
+              {% with lesson.time|time_to_schedule as schedule %}
+                {{ schedule.day }}
+              {% endwith %}
+            </td>
+            <td>
+              {% with lesson.time|time_to_schedule as schedule %}
+                {{ schedule.time }}
+              {% endwith %}
+            </td>
+            <td>{{ lesson.subject|default:"-" }}</td>
+            <td>{{ lesson.teacher|default:"-" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">Нет данных о расписании.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+</body>
+
+</html>

@@ -169,7 +169,7 @@
               </li>
               {%if user.is_authenticated%}
               <li class="nav-item active">
-                <a class="nav-link" href="{%url 'storeshop:home'%}">{{user.name}} {{user.fullname}}</a>
+                <a class="nav-link" href="{%url 'profileStudent:prof'%}">{{user.name}} {{user.fullname}}</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="{%url 'Users:logout'%}">Выйти</a>

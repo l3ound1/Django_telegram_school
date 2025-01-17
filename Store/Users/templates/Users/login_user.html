@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-{% load custom_filters %}
+{% load Users_filters %}
 <html lang="ru">
 
 <head>
@@ -112,15 +112,6 @@
       color: #f0f0f0;
   }
 
-  /* Message styling */
-  .messages .alert {
-      background-color: rgba(255, 0, 0, 0.8);
-      color: white;
-      padding: 0.5rem;
-      border-radius: 4px;
-      text-align: center;
-      margin-bottom: 1rem;
-  }
   .custom-input {
 
     width: 100%;
@@ -142,6 +133,19 @@
 .custom-btn:hover {
     background-color: #45a049;
 }
+.alert {
+  background-color: rgba(28, 187, 180, 0.9); 
+  color: white; 
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  border: 2px solid rgba(255, 255, 255, 0.3); 
+}
+
+
 
 </style>
 <body>
@@ -205,18 +209,29 @@
           </div>
           {% endif %}
 
-          <!-- Login Form -->
-            <form method="POST">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                {{ field.errors }}
-                {{ field.label_tag }}
-                {{ field|add_class:"form-control custom-input" }}
-            </div>
-            {% endfor %}
-            <button type="submit" class="btn custom-btn">{{ choice }}</button>
-          </form>
+         <!-- Login Form -->
+<form method="POST">
+  {% csrf_token %}
+  <!-- Display global form errors -->
+  {% if form.non_field_errors %}
+<div class="messages">
+    {% for error in form.non_field_errors %}
+    <div class="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+  <!-- Form fields -->
+  {% for field in form %}
+  <div class="form-group">
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {{ field|add_class:"form-control custom-input" }}
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn custom-btn">{{ choice }}</button>
+</form>
 
           <!-- Signup Link -->
           {%if title == "Авторизация"%}

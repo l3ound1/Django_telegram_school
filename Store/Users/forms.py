@@ -2,6 +2,7 @@ from  django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import User
+from django.contrib.auth import authenticate
 
 
 class User_Add(UserCreationForm):
@@ -30,6 +31,18 @@ class User_Add(UserCreationForm):
 class Login_Users(AuthenticationForm):
     username = forms.CharField(label='Логин пользователя', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError("Пароль неверный или пользователь не существует",code='invalid_login')
+    
+        
+        return cleaned_data
 
 
 

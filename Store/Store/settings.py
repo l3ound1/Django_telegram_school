@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Users.apps.UsersConfig',
     'storeshop.apps.StoreshopConfig',
     'botelegram',
+    'profileStudent.apps.ProfilestudentConfig',
 ]
 
 MIDDLEWARE = [
@@ -114,7 +115,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGOUT_REDIRECT_URL = "Users:login"
+LOGOUT_REDIRECT_URL = "storeshop:home"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
