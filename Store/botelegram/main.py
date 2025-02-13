@@ -16,7 +16,7 @@ chat_id_admin = None
 predmet_global = ""
 name_global = ""
 fullname_global = ""
-
+lesson_links = {}
 @bot.message_handler(commands=['start'])
 def hello_start(message):
     chat_id = message.chat.id
