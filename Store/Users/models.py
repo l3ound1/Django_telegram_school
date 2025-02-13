@@ -16,7 +16,8 @@ class Schedule(models.Model):
     time = models.CharField(max_length=50,default=None,null=True)
     teacher = models.CharField(max_length=50,default=None,null=True)
     subject = models.CharField(max_length=50,default=None,null=True)
-    predment = models.CharField(max_length=50,default=None,null = True)
+    id_student = models.CharField(max_length=50,default=None,null = True)
+    id_teacher = models.CharField(max_length=500,default=None,null=True)
 
 
 class User(AbstractUser):
