@@ -33,3 +33,9 @@ SCHEDULE = {
 @register.filter(name="time_to_schedule")
 def time_to_schedule(time_value):
     return SCHEDULE.get(str(time_value), {"day": "Не указано", "time": "Не указано"})
+
+
+
+@register.filter(name='split')
+def split(value, delimiter):
+    return value.split(delimiter)
