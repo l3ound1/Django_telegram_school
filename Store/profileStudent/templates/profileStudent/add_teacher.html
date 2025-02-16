@@ -75,29 +75,31 @@
     <form method="POST">
       {% csrf_token %}
       <select name="subjects" id="subjects" size="5" multiple class="form-control">
-        {% for subject in subjects %}
-          <option value="{{ subject.id }}" {% if subject in user.selected_subjects.all %}selected{% endif %}>
-            {{ subject.name }}
+        {% for subject in predment_list %}
+          <option value="{{ subject }}">
+            {{ subject }}
           </option>
         {% endfor %}
       </select>
+    
       <br />
+      <button type="submit" class="btn btn-primary">Выбрать предмет</button>
 
       <!-- Отображение учителей -->
       <h2>Учителя</h2>
       <div id="teachersList">
         {% if teachers %}
           <div class="row">
-            {% for teacher in teachers %}
+            {% for teacher in teachers_list %}
               <div class="col-md-4">
                 <div class="teacher-card">
                   <!-- Фотография учителя -->
                   <img src="{{ teacher.photo_teacher }}" alt="Фото учителя" class="teacher-photo" style="width: 100px; height: 100px; object-fit: cover;">
                   <div class="teacher-info">
-                    <p>{{ teacher.first_name }} {{ teacher.last_name }}</p>
+                    <p>{{ teacher.name }} {{ teacher.fullname }}</p>
                     <p>Email: {{ teacher.email }}</p>
                     <!-- Кнопка выбрать учителя -->
-                    <a href="{% url 'select_teacher' teacher.id %}" class="btn btn-primary">Выбрать учителя</a>
+                    <a href="{% url 'profileStudent:add' %}" class="btn btn-primary">Выбрать учителя</a>
                   </div>
                 </div>
               </div>
@@ -110,7 +112,6 @@
         {% endif %}
       </div>
 
-      <button type="submit" class="btn btn-primary">Подтвердить выбор</button>
     </form>
   </div>
 
