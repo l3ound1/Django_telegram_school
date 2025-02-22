@@ -88,13 +88,14 @@
       <!-- Отображение учителей -->
       <h2>Учителя</h2>
       <div id="teachersList">
-        {% if teachers %}
+        {% if teachers_list %}
           <div class="row">
             {% for teacher in teachers_list %}
               <div class="col-md-4">
                 <div class="teacher-card">
                   <!-- Фотография учителя -->
-                  <img src="{{ teacher.photo_teacher }}" alt="Фото учителя" class="teacher-photo" style="width: 100px; height: 100px; object-fit: cover;">
+                   <p>{{ teacher.photo_teacher.url }}</p>
+                  <img src="/./media/alex.jpg" alt="Фото учителя" class="teacher-photo" style="width: 100px; height: 100px; object-fit: cover;">
                   <div class="teacher-info">
                     <p>{{ teacher.name }} {{ teacher.fullname }}</p>
                     <p>Email: {{ teacher.email }}</p>

@@ -30,7 +30,7 @@ class User(AbstractUser):
     schedule = models.ManyToManyField(Schedule, related_name="schedule")
     evaluations = models.ForeignKey(evaluations, on_delete=models.CASCADE, related_name="evaluat",blank = True,null=True)
     home_work = models.ForeignKey(Home_work, on_delete=models.CASCADE, related_name="work_hom",blank = True,null=True)
-    photo_teacher = models.CharField(max_length=100,blank=True,null = True)
+    photo_teacher = models.ImageField(max_length=100,blank=True,null = True,)
     student_teacher = models.CharField(max_length=50,blank=True,null=True,default=None)
     regalia_teacher = models.CharField(max_length=300,blank = True,null = True,default=None)
     id_t = models.CharField(max_length= 75,null=True,default=None)

@@ -4,6 +4,7 @@ from Users.models import User
 
 predment_no_teacher = []
 def index(request):
+    predment_no_teacher.clear()
     user = request.user
     predment_list = list(set([subject.strip().lower() for subject in user.predment.split() if subject.strip()]))
     schedule = user.schedule.all()
@@ -34,5 +35,6 @@ def add_teacher(request):
         for i in teachers:
             print(i.name)
         context1["teachers_list"] = teachers
+        
 
     return render(request, 'profileStudent/add_teacher.html',context1)
