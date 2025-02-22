@@ -10,7 +10,7 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <title>Выбор предметов</title>
+  <title>Домашнее задание</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
   <link href="{% static 'css/style.css' %}" rel="stylesheet" />
   <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
@@ -36,7 +36,7 @@
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container">
           <a class="navbar-brand" href="{% url 'store:home' %}">
-            <span>Добавления учителя</span>
+            <span>Домашнее задание</span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -51,9 +51,6 @@
                 <a class="nav-link" href="{% url 'store:home' %}">Домой</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'store:category' %}">Предметы</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="{% url 'Users:logout' %}">Выйти</a>
               </li>
             </ul>
@@ -64,44 +61,20 @@
   </div>
 
   <div class="container">
-    <h1>Выберите предметы</h1>
-    <form method="POST">
+    <h1>Отправить домашнее задание</h1>
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <select name="subjects" id="subjects" size="5" multiple class="form-control">
-        {% for subject in predment_no_teacher %}
-          <option value="{{ subject }}">
-            {{ subject }}
-          </option>
-        {% endfor %}
-      </select>
-      <button type="submit" name="action" value="subject" class="btn btn-primary">Выбрать предмет</button>
-      <br />
-
-      <h2>Учителя</h2>
-      <div id="teachersList">
-        {% if teachers_list %}
-          <div class="row">
-            {% for teacher in teachers_list %}
-              <div class="col-md-4">
-                <div class="teacher-card">
-                  {% if teacher.photo_teacher %}
-                    <img src="{{ teacher.photo.url }}" alt="Фото учителя" class="teacher-photo" style="width: 100px; height: 100px; object-fit: cover;">
-                  {% else %}
-                    <p>Фото отсутствует</p>
-                  {% endif %}
-                  <div class="teacher-info">
-                    <p>Email: {{ teacher.email }}</p>
-                    <p><strong>Информация:</strong> {{ teacher.regalia_teacher }}</p>
-                    <button type="submit" name="teacher_username" value="{{ teacher.username }}" class="btn btn-primary">
-                      Выбрать учителя: {{ teacher.name }} {{ teacher.fullname }}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
+      <div class="form-group">
+        <label for="homework_file">Файл с домашним заданием</label>
+        <input type="file" class="form-control" name="homework_file" id="homework_file" required>
       </div>
+
+      <div class="form-group">
+        <label for="message">Сообщение (необязательно)</label>
+        <textarea name="message" id="message" class="form-control" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
   </div>
 
