@@ -79,7 +79,7 @@
 
       <h2>Учителя</h2>
       <div id="teachersList">
-        {% if teachers_list %}
+        {% if teachers_list  %}
           <div class="row">
             {% for teacher in teachers_list %}
               <div class="col-md-4">
@@ -90,6 +90,7 @@
                     <p>Фото отсутствует</p>
                   {% endif %}
                   <div class="teacher-info">
+                    <p>{{ teacher.name }} {{ teacher.fullname }}</p>
                     <p>Email: {{ teacher.email }}</p>
                     <p><strong>Информация:</strong> {{ teacher.regalia_teacher }}</p>
                     <button type="submit" name="teacher_username" value="{{ teacher.username }}" class="btn btn-primary">
@@ -99,6 +100,39 @@
                 </div>
               </div>
             {% endfor %}
+          </div>
+        {% elif free_time_teacher  %}
+        <div class="row">
+            <div class="col-md-4">
+              <div class="teacher-card">
+                {% if teacher.photo_teacher %}
+                  <img src="{{ selected_teacher.photo.url }}" alt="Фото учителя" class="teacher-photo" style="width: 100px; height: 100px; object-fit: cover;">
+                {% else %}
+                  <p>Фото отсутствует</p>
+                {% endif %}
+                <div class="teacher-info">
+                  <p>{{ teacher.name }} {{ teacher.fullname }}</p>
+                  <p>Email: {{ teacher.email }}</p>
+                  <p><strong>Информация:</strong> {{ teacher.regalia_teacher }}</p>
+                    {% if free_time_teacher %}
+                    <h3>Доступное время для занятий</h3>
+                    <select name="available_times" class="form-control">
+                      {% for day, times in free_time_teacher.items %}
+                        <optgroup label="{{ day }}">
+                          {% for time in times %}
+                            <option value="{{ time }}">{{ time }}</option>
+                          {% endfor %}
+                        </optgroup>
+                      {% endfor %}
+                    </select>
+                    {%else%}
+                    <p>У учителя нет свободного времени</p>
+                  {% endif %}
+                  <button type="submit" name="sche" value="confirm_choice" class="btn btn-primary">
+                    Подтвердить выбор
+                  </button>
+              </div>
+            </div>
           </div>
         {% endif %}
       </div>

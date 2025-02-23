@@ -2,21 +2,9 @@ from Users.models import User,Schedule
 
 
 
-                    #                       <!-- Dropdown for available times -->
-                    #                       <h3>Доступное время для занятий</h3>
-                    #   <select name="available_times" class="form-control">
-                    #     {% for slot in available_slots %}
-                    #       <option value="{{ slot.time }}">{{ slot.time }} ({{ slot.day }})</option>
-                    #     {% empty %}
-                    #       <option>Нет доступных временных слотов</option>
-                    #     {% endfor %}
-                    #   </select>
-
 def schedule(username):
-    try:
-        teacher = User.objects.get(username__iexact=username)
-    except User.DoesNotExist:
-        return "Учитель не найден"
+    teacher = User.objects.get(username__iexact=username)
+
 
     teacher_schedule = teacher.schedule.all()
 
@@ -49,22 +37,25 @@ def schedule(username):
     }
 
     busy_times = teacher_schedule.values_list('time', flat=True)
-    print(busy_times)
-    free_times = []
+    free_times = {}
 
     for key, value in SCHEDULE_old.items():
         day = value["day"]
         time = value["time"]
 
-        if key not in busy_times:
-            free_times.append(f'{{day: "{day}", time: "{time}"}}')
+        if time not in busy_times:
+            if day not in free_times:
+                free_times[day] = []
+            free_times[day].append(time)
 
     if free_times:
-        return "\n".join(free_times)
+        return free_times
     else:
         return "Учитель занят в течение всей недели"
 
 
+def get_teacher(username):
+    return User.objects.get(username__iexact=username)
 
 def get_all_free_times():
     return {

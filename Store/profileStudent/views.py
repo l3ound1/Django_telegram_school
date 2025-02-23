@@ -27,8 +27,10 @@ def index(request):
 
 
 def add_teacher(request):
-    teachers = []
 
+    teachers = []
+    result = {}
+    
     if request.method == "POST":
         action = request.POST.get('action')
         button_teacher = request.POST.get('teacher_username')
@@ -36,20 +38,19 @@ def add_teacher(request):
         if button_teacher:
             username_teacher = request.POST.get("teacher_username")
             result = teacher_schedule.schedule(username_teacher)
-            print(result)
-
+            selected_teacher = teacher_schedule.get_teacher(username_teacher)
+            context["selected_teacher"] = selected_teacher
     
         else:
             selected_subject = request.POST.get("subjects")
             if selected_subject:
                 teachers = User.objects.filter(predment__iexact=selected_subject)
         
-
     context = {
         'predment_no_teacher': predment_no_teacher,
         "teachers_list": teachers,
+        "free_time_teacher":result,
     }
-
     return render(request, 'profileStudent/add_teacher.html', context)
 
 def home_work(request):
