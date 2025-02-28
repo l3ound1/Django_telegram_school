@@ -101,7 +101,7 @@
               </div>
             {% endfor %}
           </div>
-        {% elif free_time_teacher  %}
+        {% elif selected_teacher  %}
         <div class="row">
             <div class="col-md-4">
               <div class="teacher-card">
@@ -111,24 +111,24 @@
                   <p>Фото отсутствует</p>
                 {% endif %}
                 <div class="teacher-info">
-                  <p>{{ teacher.name }} {{ teacher.fullname }}</p>
-                  <p>Email: {{ teacher.email }}</p>
-                  <p><strong>Информация:</strong> {{ teacher.regalia_teacher }}</p>
+                  <p>{{ selected_teacher.name }} {{ selected_teacher.fullname }}</p>
+                  <p>Email: {{ selected_teacher.email }}</p>
+                  <p><strong>Информация:</strong> {{ selected_teacher.regalia_teacher }}</p>
                     {% if free_time_teacher %}
                     <h3>Доступное время для занятий</h3>
                     <select name="available_times" class="form-control">
                       {% for day, times in free_time_teacher.items %}
                         <optgroup label="{{ day }}">
                           {% for time in times %}
-                            <option value="{{ time }}">{{ time }}</option>
+                            <option value="{{ day }} {{ time }}">{{ time }}</option>
                           {% endfor %}
                         </optgroup>
                       {% endfor %}
                     </select>
-                    {%else%}
+                    {% else %}
                     <p>У учителя нет свободного времени</p>
                   {% endif %}
-                  <button type="submit" name="sche" value="confirm_choice" class="btn btn-primary">
+                  <button type="submit" name="schedule" value="confirm_choice" class="btn btn-primary">
                     Подтвердить выбор
                   </button>
               </div>

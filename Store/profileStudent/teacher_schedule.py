@@ -1,5 +1,5 @@
 from Users.models import User,Schedule
-
+from . import Schedule_dict
 
 
 def schedule(username):
@@ -9,41 +9,14 @@ def schedule(username):
     teacher_schedule = teacher.schedule.all()
 
 
-    SCHEDULE_old = {
-        "1": {"day": "Понедельник", "time": "8:00"},
-        "2": {"day": "Понедельник", "time": "10:15"},
-        "3": {"day": "Понедельник", "time": "12:30"},
-        "4": {"day": "Понедельник", "time": "14:15"},
-        "5": {"day": "Вторник", "time": "8:00"},
-        "6": {"day": "Вторник", "time": "10:15"},
-        "7": {"day": "Вторник", "time": "14:15"},
-        "8": {"day": "Вторник", "time": "16:15"},
-        "9": {"day": "Среда", "time": "8:00"},
-        "10": {"day": "Среда", "time": "10:15"},
-        "11": {"day": "Среда", "time": "12:30"},
-        "12": {"day": "Среда", "time": "14:15"},
-        "13": {"day": "Четверг", "time": "8:00"},
-        "14": {"day": "Четверг", "time": "10:15"},
-        "15": {"day": "Четверг", "time": "12:30"},
-        "16": {"day": "Четверг", "time": "14:15"},
-        "17": {"day": "Пятница", "time": "8:00"},
-        "18": {"day": "Пятница", "time": "10:15"},
-        "19": {"day": "Пятница", "time": "12:30"},
-        "20": {"day": "Пятница", "time": "14:15"},
-        "21": {"day": "Суббота", "time": "8:00"},
-        "22": {"day": "Суббота", "time": "10:15"},
-        "23": {"day": "Суббота", "time": "12:30"},
-        "24": {"day": "Суббота", "time": "14:15"},
-    }
 
     busy_times = teacher_schedule.values_list('time', flat=True)
     free_times = {}
 
-    for key, value in SCHEDULE_old.items():
+    for key, value in Schedule_dict.SCHEDULE_old.items():
         day = value["day"]
         time = value["time"]
-
-        if time not in busy_times:
+        if key not in busy_times:
             if day not in free_times:
                 free_times[day] = []
             free_times[day].append(time)
