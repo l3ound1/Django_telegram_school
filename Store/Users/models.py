@@ -8,13 +8,14 @@ class evaluations(models.Model):
 
 
 class Home_work(models.Model):
-    subjects = models.CharField(blank=True, max_length=200, null=True)
-    file_home_work = models.CharField(blank=True, max_length=200, null=True)
+    id_student = models.CharField(blank=True, max_length=200, null=True)
+    file_home_work = models.FileField(upload_to="home_work")
 
 
 class Schedule(models.Model):
     time = models.CharField(max_length=50,default=None,null=True)
     teacher = models.CharField(max_length=50,default=None,null=True)
+    student = models.CharField(max_length=50,default=None,null=True)
     subject = models.CharField(max_length=50,default=None,null=True)
     id_student = models.CharField(max_length=50,default=None,null = True)
     id_teacher = models.CharField(max_length=500,default=None,null=True)

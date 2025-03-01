@@ -3,24 +3,32 @@ from Users.models import User,Schedule
 from . import teacher_schedule
 from . import add_teacher_function
 import Store
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 # Create your views here.
 
 predment_no_teacher = []
 def index(request):
+    teacher_no = False
     predment_no_teacher.clear()
     user = request.user
     predment_list = list(set([subject.strip().lower() for subject in user.predment.split() if subject.strip()]))
     schedule = user.schedule.all()
     schedule_subjects = [s.subject.strip().lower() for s in schedule if s.subject.strip()]
     schedule_subjects = list(set(schedule_subjects))
+    if user.profile == "teacher":
+        teacher_no = True
+
     for predment in predment_list:
         if predment in schedule_subjects:
             continue
         else:
             predment_no_teacher.append((predment + " ").title())
+
     context = {
         'user': user,
-        'predment_no_teacher':predment_no_teacher
+        'predment_no_teacher':predment_no_teacher,
+        "teacher_or_student":teacher_no,
     }
 
     return render(request, 'profileStudent/profile.html', context)
@@ -66,4 +74,11 @@ def add_teacher(request):
 
 
 def home_work(request):
+    if request.method =="POST":
+        student = request.POST.get("student")
+        file_student = request.FILES["homework_file"]
+        message = request.POST.get("message")
+        
+        file = default_storage.save(f"Django_telegram_school/home_work/{student}_{file_student.name}",ContentFile(file_student.read()))
+        print(student,file,message)
     return render(request,'profileStudent/home_work.html')

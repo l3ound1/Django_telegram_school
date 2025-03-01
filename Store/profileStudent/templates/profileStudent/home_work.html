@@ -64,6 +64,14 @@
     <h1>Отправить домашнее задание</h1>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
+      <h2>Ученика</h2>
+      <select name="student" id="student" size="5" multiple class="form-control">
+        {% for user in user.schedule.all %}
+          <option value="{{ user.id_student }}">
+            {{ user.student }}
+          </option>
+        {% endfor %}
+      </select>
       <div class="form-group">
         <label for="homework_file">Файл с домашним заданием</label>
         <input type="file" class="form-control" name="homework_file" id="homework_file" required>

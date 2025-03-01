@@ -14,7 +14,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Профиль ученика</title>
+  <title>Профиль пользователя</title>
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
   <link href="{% static 'css/style.css' %}" rel="stylesheet" />
@@ -42,7 +42,11 @@
         <nav class="navbar navbar-expand-lg custom_nav-container">
           <a class="navbar-brand" href="{% url 'store:home' %}">
             <span>
-              Профиль ученика {{user.first_name}} {{user.last_name}}
+              {%if teacher_or_student %}
+                Профиль учителя {{user.first_name}} {{user.last_name}}
+              {%else %}
+                Профиль ученика {{user.first_name}} {{user.last_name}}
+              {%endif%}
             </span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +77,11 @@
   <section class="profile_section layout_padding">
     <div class="container">
       <div class="detail-box">
-        <h1>Профиль ученика {{ user.name }} {{ user.fullname }}</h1>
+        {%if teacher_or_student %}
+          <h1>Профиль учителя {{ user.name }} {{ user.fullname }}</h1>
+        {%else %}
+          <h1>Профиль ученика {{ user.name }} {{ user.fullname }}</h1>
+        {%endif%}
       </div>
       <div class="profile_container">
         <div class="box">
@@ -84,7 +92,13 @@
                         <p>У вас нету учителя по предмету: {{ predment }}</p>
                         <a href="{% url 'profileStudent:add' %}" class="btn btn-primary">Добавить учителя</a>
                 {% endfor %}
-
+            {%if teacher_or_student %}
+              <div class="btn-box">
+                <a href="{%url 'profileStudent:home_work'%}" class="btn-1">
+                  Отправить домашнее задание
+                </a>
+              </div>
+             {%endif%}
           </div>
         </div>
       </div>
@@ -101,7 +115,12 @@
             <th>День недели</th>
             <th>Время</th>
             <th>Предмет</th>
-            <th>Учитель</th>
+            {%if teacher_or_student %}
+              <th>Ученик</th>
+            {%else%}
+              <th>Учитель</th>
+            {%endif%}
+            
           </tr>
         </thead>
         <tbody>
@@ -118,7 +137,11 @@
               {% endwith %}
             </td>
             <td>{{ lesson.subject|default:"-" }}</td>
-            <td>{{ lesson.teacher|default:"-" }}</td>
+            {%if teacher_or_student %}
+              <td>{{ lesson.student|default:"-" }}</td>
+            {%else %}
+              <td>{{ lesson.teacher|default:"-" }}</td>
+            {%endif%}
           </tr>
           {% empty %}
           <tr>
